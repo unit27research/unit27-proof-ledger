@@ -1,0 +1,58 @@
+{
+  "cases_path": "evals/proof_cases.json",
+  "project": {
+    "created_at": "2026-04-30T20:05:58+00:00",
+    "name": "unit27-proof-ledger"
+  },
+  "runs": [
+    {
+      "case_id": "core-cli-acceptance",
+      "claim": "Proof Ledger can initialize a project, record evidence-bearing runs, execute commands, and generate a reviewer-facing proof packet.",
+      "command": "python3 -m unittest discover -s tests",
+      "evidence": [
+        "u27/evidence/run-0001.txt"
+      ],
+      "id": "run-0001",
+      "note": "",
+      "recorded_at": "2026-04-30T20:06:10+00:00",
+      "status": "pass"
+    },
+    {
+      "case_id": "wheel-build",
+      "claim": "Proof Ledger packages as an installable Python project with a console entry point.",
+      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-final",
+      "evidence": [
+        "u27/evidence/run-0002.txt"
+      ],
+      "id": "run-0002",
+      "note": "",
+      "recorded_at": "2026-04-30T20:07:39+00:00",
+      "status": "pass"
+    },
+    {
+      "case_id": "core-cli-acceptance",
+      "claim": "Proof Ledger can initialize a project, record evidence-bearing runs, execute commands, and generate a reviewer-facing proof packet.",
+      "command": "python3 -m unittest discover -s tests",
+      "evidence": [
+        "u27/evidence/run-0003.txt"
+      ],
+      "id": "run-0003",
+      "note": "",
+      "recorded_at": "2026-04-30T20:11:24+00:00",
+      "status": "pass"
+    },
+    {
+      "case_id": "wheel-build",
+      "claim": "Proof Ledger packages as an installable Python project with a console entry point.",
+      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-final",
+      "evidence": [
+        "u27/evidence/run-0004.txt"
+      ],
+      "id": "run-0004",
+      "note": "",
+      "recorded_at": "2026-04-30T20:11:29+00:00",
+      "status": "pass"
+    }
+  ],
+  "schema_version": "0.1"
+}

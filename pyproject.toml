@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unit27-proof-ledger"
+version = "0.1.0"
+description = "Proof Ledger turns eval runs, demo commands, and test results into durable evidence records and reviewer-ready proof packets."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "Unit27 Research" }
+]
+keywords = ["ai", "evals", "cli", "evidence", "proof", "testing", "unit27"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Topic :: Software Development :: Testing"
+]
+
+[project.scripts]
+proof-ledger = "proof_ledger.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

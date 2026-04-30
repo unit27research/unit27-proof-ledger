@@ -1,0 +1,10 @@
+[
+  {
+    "claim": "Proof Ledger can record demo command evidence.",
+    "expected": "A command run is recorded with status and evidence.",
+    "id": "demo-command",
+    "limits": [
+      "This packet only reflects recorded local evidence."
+    ]
+  }
+]

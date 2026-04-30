@@ -1,0 +1,19 @@
+[
+  {
+    "claim": "Proof Ledger can initialize a project, record evidence-bearing runs, execute commands, and generate a reviewer-facing proof packet.",
+    "expected": "The unittest suite passes through the Proof Ledger run path, producing a ledger entry and captured evidence file.",
+    "id": "core-cli-acceptance",
+    "limits": [
+      "This packet only reflects recorded local evidence.",
+      "The current evidence covers local CLI behavior, not packaging publication or GitHub release state."
+    ]
+  },
+  {
+    "claim": "Proof Ledger packages as an installable Python project with a console entry point.",
+    "expected": "A wheel build produces unit27_proof_ledger-0.1.0 and includes proof_ledger modules plus entry_points.txt.",
+    "id": "wheel-build",
+    "limits": [
+      "Wheel evidence proves local packaging only; it does not prove PyPI publication or GitHub release state."
+    ]
+  }
+]

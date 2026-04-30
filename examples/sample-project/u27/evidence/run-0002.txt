@@ -1,0 +1,7 @@
+$ python3 -c 'print('"'"'demo command completed'"'"')'
+exit_code: 0
+
+## stdout
+demo command completed
+
+## stderr

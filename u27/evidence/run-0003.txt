@@ -1,0 +1,11 @@
+$ python3 -m unittest discover -s tests
+exit_code: 0
+
+## stdout
+
+## stderr
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.402s
+
+OK
