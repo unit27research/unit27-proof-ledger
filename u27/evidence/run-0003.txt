@@ -1,4 +1,4 @@
-$ /Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-adoption-final
+$ /Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-branding-wheel
 exit_code: 0
 
 ## stdout
@@ -8,8 +8,8 @@ Processing ./.
 Building wheels for collected packages: unit27-proof-ledger
   Building wheel for unit27-proof-ledger (pyproject.toml): started
   Building wheel for unit27-proof-ledger (pyproject.toml): finished with status 'done'
-  Created wheel for unit27-proof-ledger: filename=unit27_proof_ledger-0.1.0-py3-none-any.whl size=7975 sha256=6e1c21aa2755b16c6cfd04fb7787b2110dbdf9fc96d258dc448e9d06e2366c89
-  Stored in directory: /private/var/folders/cg/3wtt78v577d66ckcvzykyvjh0000gn/T/pip-ephem-wheel-cache-vsw_qer6/wheels/52/26/28/13c2962c1f0f877690f5221f54a23636b309f13b70985f3212
+  Created wheel for unit27-proof-ledger: filename=unit27_proof_ledger-0.1.0-py3-none-any.whl size=8114 sha256=1ceb3261b42f3fa913e2f46b6487ccd5221bc09090e7a5bb95bcca16493fa817
+  Stored in directory: /private/var/folders/cg/3wtt78v577d66ckcvzykyvjh0000gn/T/pip-ephem-wheel-cache-j8kntkv2/wheels/52/26/28/13c2962c1f0f877690f5221f54a23636b309f13b70985f3212
 Successfully built unit27-proof-ledger
 
 ## stderr

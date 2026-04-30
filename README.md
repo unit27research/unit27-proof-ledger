@@ -1,8 +1,8 @@
 # U27-S04 // Proof Ledger
 
-Proof Ledger turns eval runs, demo commands, and test results into durable evidence records and reviewer-ready proof packets.
+[![CI](https://github.com/unit27research/unit27-proof-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/unit27research/unit27-proof-ledger/actions/workflows/ci.yml)
 
-Use it when a repo says "tests pass", "the demo works", or "ready for review" and you want the evidence preserved as files instead of terminal memory.
+Proof Ledger enforces evidence discipline by converting eval runs, demo commands, and test results into durable proof artifacts.
 
 ```text
 U27-S04
@@ -12,6 +12,10 @@ CLASS: SYSTEM
 FUNCTION: Evidence Recording + Proof Artifact Generation
 REF_ID: PROOF-LEDGER-01
 ```
+
+It answers one narrow question:
+
+> What evidence supports the claims this repo is making right now?
 
 ## 60-Second Start
 
@@ -33,6 +37,17 @@ proof-ledger packet
 ```
 
 If the command exits nonzero or fails to launch, Proof Ledger records a failed run with captured evidence and returns a nonzero exit code.
+
+## What It Does
+
+Proof Ledger runs local proof commands and writes:
+
+1. `u27/proof_ledger.json`
+2. `u27/PROOF_PACKET.md`
+3. `u27/evidence/run-0001.txt`
+4. `evals/proof_cases.json`
+
+It is designed to feel like an evidence ledger, not a benchmark suite or project review.
 
 ## Why It Exists
 

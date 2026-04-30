@@ -1,7 +1,7 @@
 # Proof Packet
 
 Project: unit27-proof-ledger
-Generated: 2026-04-30T23:30:34+00:00
+Generated: 2026-04-30T23:42:00+00:00
 
 ## Verified Claims
 
@@ -12,17 +12,17 @@ Generated: 2026-04-30T23:30:34+00:00
 
 - Proof Ledger can create a complete demo project and proof packet from a single command.
   - Case: `first-use-demo`
-  - Command: `python3 -m proof_ledger.cli demo --root /tmp/proof-ledger-adoption-final`
+  - Command: `python3 -m proof_ledger.cli demo --root /tmp/proof-ledger-branding-demo`
   - Evidence: `u27/evidence/run-0002.txt`
 
 - Proof Ledger packages as an installable Python project.
   - Case: `wheel-build`
-  - Command: `/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-adoption-final`
+  - Command: `/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-branding-wheel`
   - Evidence: `u27/evidence/run-0003.txt`
 
 - Proof Ledger's built wheel contains the CLI modules and proof-ledger console entry point.
   - Case: `wheel-contents`
-  - Command: `/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-adoption-final/unit27_proof_ledger-0.1.0-py3-none-any.whl`
+  - Command: `/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/verify_wheel.py /tmp/proof-ledger-branding-wheel/unit27_proof_ledger-0.1.0-py3-none-any.whl`
   - Evidence: `u27/evidence/run-0004.txt`
 
 ## Open Failures

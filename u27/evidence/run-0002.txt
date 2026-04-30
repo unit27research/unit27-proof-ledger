@@ -1,9 +1,9 @@
-$ python3 -m proof_ledger.cli demo --root /tmp/proof-ledger-adoption-final
+$ python3 -m proof_ledger.cli demo --root /tmp/proof-ledger-branding-demo
 exit_code: 0
 
 ## stdout
-Demo project: /tmp/proof-ledger-adoption-final
+Demo project: /tmp/proof-ledger-branding-demo
 Recorded run-0001 and run-0002
-Demo proof packet: /tmp/proof-ledger-adoption-final/u27/PROOF_PACKET.md
+Demo proof packet: /tmp/proof-ledger-branding-demo/u27/PROOF_PACKET.md
 
 ## stderr
