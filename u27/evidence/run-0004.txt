@@ -1,0 +1,7 @@
+$ /Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-adoption-final/unit27_proof_ledger-0.1.0-py3-none-any.whl
+exit_code: 0
+
+## stdout
+wheel verified: unit27-proof-ledger
+
+## stderr

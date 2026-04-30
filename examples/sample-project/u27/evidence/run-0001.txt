@@ -1,0 +1,7 @@
+$ python3 -c 'print('"'"'demo tests passed'"'"')'
+exit_code: 0
+
+## stdout
+demo tests passed
+
+## stderr

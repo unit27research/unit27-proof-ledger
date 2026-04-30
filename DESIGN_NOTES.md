@@ -29,6 +29,20 @@ Proof Ledger has three layers:
 
 The ledger is the source of truth. The packet is an export.
 
+## First-Use Bar
+
+Proof Ledger should be useful before a maintainer writes any custom config.
+
+The default initialized cases are intentionally practical:
+
+```text
+tests-pass
+cli-smoke-test
+package-builds
+```
+
+The `demo` command exists so a reviewer can see the full loop immediately: initialize cases, run commands, capture evidence, and generate a packet.
+
 ## Why Evidence Paths Are Required
 
 A pass/fail label without evidence is too weak. Every recorded run must point to at least one local evidence file.

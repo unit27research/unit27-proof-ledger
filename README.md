@@ -2,6 +2,8 @@
 
 Proof Ledger turns eval runs, demo commands, and test results into durable evidence records and reviewer-ready proof packets.
 
+Use it when a repo says "tests pass", "the demo works", or "ready for review" and you want the evidence preserved as files instead of terminal memory.
+
 ```text
 U27-S04
 PROOF LEDGER
@@ -10,6 +12,27 @@ CLASS: SYSTEM
 FUNCTION: Evidence Recording + Proof Artifact Generation
 REF_ID: PROOF-LEDGER-01
 ```
+
+## 60-Second Start
+
+From this repo:
+
+```bash
+pip install -e .
+proof-ledger demo
+cat proof-ledger-demo/u27/PROOF_PACKET.md
+```
+
+On your own repo:
+
+```bash
+proof-ledger init
+proof-ledger run --case tests-pass -- python -m pytest
+proof-ledger run --case cli-smoke-test -- python -m your_package --help
+proof-ledger packet
+```
+
+If the command exits nonzero or fails to launch, Proof Ledger records a failed run with captured evidence and returns a nonzero exit code.
 
 ## Why It Exists
 
@@ -22,15 +45,23 @@ AI and agentic systems often ship with vague proof:
 
 Proof Ledger makes that evidence inspectable. It records what was tested, what command produced the evidence, what passed or failed, where the proof lives, and what can honestly be shown to a reviewer.
 
-## CLI
+## Install
 
-Install locally:
+For local development:
 
 ```bash
 pip install -e .
 ```
 
-Initialize proof files in a project:
+After this repo is public:
+
+```bash
+pipx install git+https://github.com/unit27research/unit27-proof-ledger
+```
+
+## Commands
+
+Initialize proof files:
 
 ```bash
 proof-ledger init
@@ -40,7 +71,7 @@ Record a run:
 
 ```bash
 proof-ledger record \
-  --case demo-command \
+  --case tests-pass \
   --command "python -m unittest discover -s tests" \
   --status pass \
   --evidence outputs/test-output.txt
@@ -49,7 +80,7 @@ proof-ledger record \
 Or execute a command and capture its evidence automatically:
 
 ```bash
-proof-ledger run --case demo-command -- python3 -m unittest discover -s tests
+proof-ledger run --case tests-pass -- python3 -m unittest discover -s tests
 ```
 
 If the command exits nonzero or fails to launch, Proof Ledger records a failed run with captured evidence and returns a nonzero exit code.
@@ -59,6 +90,24 @@ Generate the proof packet:
 ```bash
 proof-ledger packet
 ```
+
+Create a complete demo project:
+
+```bash
+proof-ledger demo
+```
+
+## Default Cases
+
+`proof-ledger init` creates practical starter cases:
+
+```text
+tests-pass
+cli-smoke-test
+package-builds
+```
+
+Edit `evals/proof_cases.json` to replace or extend these with project-specific claims.
 
 ## Artifacts
 
@@ -77,10 +126,10 @@ The ledger is the durable evidence record. The packet is the reviewer-facing exp
 
 ```json
 {
-  "id": "demo-command",
-  "claim": "Proof Ledger can record demo command evidence.",
-  "expected": "A command run is recorded with status and evidence.",
-  "limits": ["This packet only reflects recorded local evidence."]
+  "id": "tests-pass",
+  "claim": "The project test suite passes in the current local checkout.",
+  "expected": "The configured test command exits 0 and stores stdout/stderr as evidence.",
+  "limits": ["This claim covers the recorded local test command only."]
 }
 ```
 
@@ -107,7 +156,7 @@ Proof Ledger does not:
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests
 proof-ledger init
-proof-ledger run --case demo-command -- python3 -m unittest discover -s tests
+proof-ledger run --case tests-pass -- python3 -m unittest discover -s tests
 proof-ledger packet
 ```
 
@@ -116,9 +165,10 @@ proof-ledger packet
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests
 PYTHONPATH=src python3 -m proof_ledger.cli init --root examples/sample-project
-PYTHONPATH=src python3 -m proof_ledger.cli run --root examples/sample-project --case demo-command -- python3 -c "print('demo command completed')"
+PYTHONPATH=src python3 -m proof_ledger.cli demo --root examples/sample-project
 PYTHONPATH=src python3 -m proof_ledger.cli packet --root examples/sample-project
-python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-final/unit27_proof_ledger-0.1.0-py3-none-any.whl
+python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel
+python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel/unit27_proof_ledger-0.1.0-py3-none-any.whl
 ```
 
 ## License

@@ -23,5 +23,13 @@
     "limits": [
       "Wheel contents evidence proves local artifact structure only; it does not prove installation in every target environment."
     ]
+  },
+  {
+    "claim": "Proof Ledger can create a complete demo project and proof packet from a single command.",
+    "expected": "The demo command exits 0 and writes a proof packet containing recorded tests-pass and cli-smoke-test evidence.",
+    "id": "first-use-demo",
+    "limits": [
+      "Demo evidence proves first-use flow only; it does not prove every user project shape."
+    ]
   }
 ]

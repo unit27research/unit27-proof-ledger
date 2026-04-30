@@ -27,6 +27,8 @@ class ProofLedgerCoreTests(unittest.TestCase):
             self.assertEqual(ledger["schema_version"], "0.1")
             self.assertEqual(ledger["project"]["name"], root.name)
             self.assertEqual(ledger["runs"], [])
+            cases = json.loads((root / "evals" / "proof_cases.json").read_text(encoding="utf-8"))
+            self.assertEqual([case["id"] for case in cases], ["tests-pass", "cli-smoke-test", "package-builds"])
 
     def test_record_run_requires_known_case(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -54,7 +56,7 @@ class ProofLedgerCoreTests(unittest.TestCase):
 
             run = record_run(
                 root,
-                case_id="demo-command",
+                case_id="tests-pass",
                 command="python -m unittest",
                 status="pass",
                 evidence=[str(evidence_path)],
@@ -62,7 +64,7 @@ class ProofLedgerCoreTests(unittest.TestCase):
             )
 
             ledger = load_ledger(root / "u27" / "proof_ledger.json")
-            self.assertEqual(run["case_id"], "demo-command")
+            self.assertEqual(run["case_id"], "tests-pass")
             self.assertEqual(ledger["runs"][0]["status"], "pass")
             self.assertEqual(ledger["runs"][0]["evidence"][0], "outputs/test-output.txt")
 
@@ -76,7 +78,7 @@ class ProofLedgerCoreTests(unittest.TestCase):
             with self.assertRaises(LedgerError) as error:
                 record_run(
                     root,
-                    case_id="demo-command",
+                    case_id="tests-pass",
                     command="external proof",
                     status="pass",
                     evidence=[str(evidence_path)],
@@ -93,7 +95,7 @@ class ProofLedgerCoreTests(unittest.TestCase):
             evidence_path.write_text("demo ok", encoding="utf-8")
             record_run(
                 root,
-                case_id="demo-command",
+                case_id="tests-pass",
                 command="proof-ledger demo",
                 status="pass",
                 evidence=[str(evidence_path)],
@@ -103,9 +105,9 @@ class ProofLedgerCoreTests(unittest.TestCase):
 
             self.assertIn("# Proof Packet", packet)
             self.assertIn("## Verified Claims", packet)
-            self.assertIn("Proof Ledger can record demo command evidence.", packet)
+            self.assertIn("The project test suite passes in the current local checkout.", packet)
             self.assertIn("## Known Limits", packet)
-            self.assertIn("This packet only reflects recorded local evidence.", packet)
+            self.assertIn("This claim covers the recorded local test command only.", packet)
             self.assertTrue((root / "u27" / "PROOF_PACKET.md").exists())
 
     def test_generate_packet_uses_latest_run_per_case(self):
@@ -117,8 +119,8 @@ class ProofLedgerCoreTests(unittest.TestCase):
             first.parent.mkdir()
             first.write_text("first", encoding="utf-8")
             second.write_text("second", encoding="utf-8")
-            record_run(root, case_id="demo-command", command="first command", status="pass", evidence=[str(first)])
-            record_run(root, case_id="demo-command", command="second command", status="pass", evidence=[str(second)])
+            record_run(root, case_id="tests-pass", command="first command", status="pass", evidence=[str(first)])
+            record_run(root, case_id="tests-pass", command="second command", status="pass", evidence=[str(second)])
 
             packet = generate_packet(root)
 

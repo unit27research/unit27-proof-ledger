@@ -29,6 +29,7 @@ class ProofLedgerCliTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn("Initialized Proof Ledger", result.stdout)
             self.assertTrue((Path(tmp) / "u27" / "proof_ledger.json").exists())
+            self.assertIn("tests-pass", (Path(tmp) / "evals" / "proof_cases.json").read_text())
 
     def test_record_command_requires_evidence_and_writes_run(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -42,7 +43,7 @@ class ProofLedgerCliTests(unittest.TestCase):
                 root,
                 "record",
                 "--case",
-                "demo-command",
+                "tests-pass",
                 "--command",
                 "python -m unittest",
                 "--status",
@@ -65,7 +66,7 @@ class ProofLedgerCliTests(unittest.TestCase):
                 root,
                 "record",
                 "--case",
-                "demo-command",
+                "tests-pass",
                 "--command",
                 "proof-ledger demo",
                 "--status",
@@ -78,7 +79,7 @@ class ProofLedgerCliTests(unittest.TestCase):
 
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn("Generated u27/PROOF_PACKET.md", result.stdout)
-            self.assertIn("Proof Ledger can record demo command evidence.", (root / "u27" / "PROOF_PACKET.md").read_text())
+            self.assertIn("The project test suite passes in the current local checkout.", (root / "u27" / "PROOF_PACKET.md").read_text())
 
     def test_run_command_executes_command_and_captures_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -89,7 +90,7 @@ class ProofLedgerCliTests(unittest.TestCase):
                 root,
                 "run",
                 "--case",
-                "demo-command",
+                "cli-smoke-test",
                 "--",
                 sys.executable,
                 "-c",
@@ -133,7 +134,7 @@ class ProofLedgerCliTests(unittest.TestCase):
                 root,
                 "run",
                 "--case",
-                "demo-command",
+                "cli-smoke-test",
                 "--",
                 "definitely-not-a-real-proof-ledger-command",
             )
@@ -143,6 +144,20 @@ class ProofLedgerCliTests(unittest.TestCase):
             evidence = root / "u27" / "evidence" / "run-0001.txt"
             self.assertTrue(evidence.exists())
             self.assertIn("launch_error:", evidence.read_text())
+
+    def test_demo_command_creates_complete_first_use_project(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+
+            result = self.run_cli(root, "demo")
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("Demo proof packet", result.stdout)
+            demo_root = root / "proof-ledger-demo"
+            self.assertTrue((demo_root / "u27" / "PROOF_PACKET.md").exists())
+            packet = (demo_root / "u27" / "PROOF_PACKET.md").read_text(encoding="utf-8")
+            self.assertIn("cli-smoke-test", packet)
+            self.assertIn("tests-pass", packet)
 
 
 if __name__ == "__main__":

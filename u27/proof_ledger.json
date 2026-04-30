@@ -14,31 +14,43 @@
       ],
       "id": "run-0001",
       "note": "",
-      "recorded_at": "2026-04-30T23:15:58+00:00",
+      "recorded_at": "2026-04-30T23:28:54+00:00",
       "status": "pass"
     },
     {
-      "case_id": "wheel-build",
-      "claim": "Proof Ledger packages as an installable Python project.",
-      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-hardening",
+      "case_id": "first-use-demo",
+      "claim": "Proof Ledger can create a complete demo project and proof packet from a single command.",
+      "command": "python3 -m proof_ledger.cli demo --root /tmp/proof-ledger-adoption-final",
       "evidence": [
         "u27/evidence/run-0002.txt"
       ],
       "id": "run-0002",
       "note": "",
-      "recorded_at": "2026-04-30T23:16:03+00:00",
+      "recorded_at": "2026-04-30T23:29:06+00:00",
       "status": "pass"
     },
     {
-      "case_id": "wheel-contents",
-      "claim": "Proof Ledger's built wheel contains the CLI modules and proof-ledger console entry point.",
-      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-hardening/unit27_proof_ledger-0.1.0-py3-none-any.whl",
+      "case_id": "wheel-build",
+      "claim": "Proof Ledger packages as an installable Python project.",
+      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/proof-ledger-wheel-adoption-final",
       "evidence": [
         "u27/evidence/run-0003.txt"
       ],
       "id": "run-0003",
       "note": "",
-      "recorded_at": "2026-04-30T23:16:07+00:00",
+      "recorded_at": "2026-04-30T23:29:16+00:00",
+      "status": "pass"
+    },
+    {
+      "case_id": "wheel-contents",
+      "claim": "Proof Ledger's built wheel contains the CLI modules and proof-ledger console entry point.",
+      "command": "/Users/joshuabloodworth/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-adoption-final/unit27_proof_ledger-0.1.0-py3-none-any.whl",
+      "evidence": [
+        "u27/evidence/run-0004.txt"
+      ],
+      "id": "run-0004",
+      "note": "",
+      "recorded_at": "2026-04-30T23:29:21+00:00",
       "status": "pass"
     }
   ],

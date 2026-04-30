@@ -1,7 +1,7 @@
-$ python3 -c 'print('"'"'demo command completed'"'"')'
+$ python3 -c 'print('"'"'demo cli smoke ok'"'"')'
 exit_code: 0
 
 ## stdout
-demo command completed
+demo cli smoke ok
 
 ## stderr

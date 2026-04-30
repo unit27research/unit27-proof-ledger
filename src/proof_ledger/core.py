@@ -178,11 +178,23 @@ def generate_packet(root: Path | str) -> str:
 def _default_cases() -> list[dict]:
     return [
         {
-            "id": "demo-command",
-            "claim": "Proof Ledger can record demo command evidence.",
-            "expected": "A command run is recorded with status and evidence.",
-            "limits": ["This packet only reflects recorded local evidence."],
-        }
+            "id": "tests-pass",
+            "claim": "The project test suite passes in the current local checkout.",
+            "expected": "The configured test command exits 0 and stores stdout/stderr as evidence.",
+            "limits": ["This claim covers the recorded local test command only."],
+        },
+        {
+            "id": "cli-smoke-test",
+            "claim": "The primary CLI or demo command runs successfully.",
+            "expected": "The smoke command exits 0 and produces inspectable output.",
+            "limits": ["This smoke test does not prove every CLI option or integration path."],
+        },
+        {
+            "id": "package-builds",
+            "claim": "The project can produce its expected build or package artifact.",
+            "expected": "The build command exits 0 and stores build output as evidence.",
+            "limits": ["This claim covers local artifact creation, not distribution or release state."],
+        },
     ]
 
 

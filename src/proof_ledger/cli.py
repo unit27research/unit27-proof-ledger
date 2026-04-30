@@ -46,6 +46,9 @@ def main(argv: list[str] | None = None) -> int:
     run_parser.add_argument("--note", default="", help="Optional reviewer note.")
     run_parser.add_argument("run_args", nargs=argparse.REMAINDER, help="Command to execute after --.")
 
+    demo_parser = subparsers.add_parser("demo", help="Create a complete demo project and proof packet.")
+    demo_parser.add_argument("--root", default="proof-ledger-demo", help="Demo project root. Defaults to proof-ledger-demo.")
+
     args = parser.parse_args(argv)
 
     try:
@@ -79,55 +82,84 @@ def main(argv: list[str] | None = None) -> int:
             command_args = args.run_args[1:] if args.run_args[:1] == ["--"] else args.run_args
             if not command_args:
                 raise LedgerError("run requires a command after --")
-            ledger = load_ledger(root / "u27" / "proof_ledger.json")
-            get_case(root, ledger, args.case)
-            run_id = f"run-{len(ledger['runs']) + 1:04d}"
-            evidence_dir = root / "u27" / "evidence"
-            evidence_dir.mkdir(parents=True, exist_ok=True)
-            evidence_path = evidence_dir / f"{run_id}.txt"
-            try:
-                completed = subprocess.run(command_args, cwd=root, text=True, capture_output=True, check=False)
-                exit_code = completed.returncode
-                stdout = completed.stdout
-                stderr = completed.stderr
-                extra_lines: list[str] = []
-            except OSError as error:
-                exit_code = 1
-                stdout = ""
-                stderr = ""
-                extra_lines = [f"launch_error: {error}"]
-
-            evidence_path.write_text(
-                "\n".join(
-                    [
-                        f"$ {shlex.join(command_args)}",
-                        f"exit_code: {exit_code}",
-                        *extra_lines,
-                        "",
-                        "## stdout",
-                        stdout,
-                        "## stderr",
-                        stderr,
-                    ]
-                ),
-                encoding="utf-8",
-            )
-            status = "pass" if exit_code == 0 else "fail"
-            run = record_run(
-                root,
-                case_id=args.case,
-                command=shlex.join(command_args),
-                status=status,
-                evidence=[str(evidence_path)],
-                note=args.note,
-            )
+            run, exit_code = _execute_and_record(root, args.case, command_args, args.note)
             print(f"Recorded {run['id']}")
             return exit_code
+
+        if args.action == "demo":
+            root = Path(args.root).absolute()
+            init_project(root)
+            readme = root / "README.md"
+            if not readme.exists():
+                readme.write_text("# Proof Ledger Demo\n\nA tiny project used to show proof-ledger output.\n", encoding="utf-8")
+            test_run, test_exit = _execute_and_record(
+                root,
+                "tests-pass",
+                [sys.executable, "-c", "print('demo tests passed')"],
+                "Demo test evidence.",
+            )
+            smoke_run, smoke_exit = _execute_and_record(
+                root,
+                "cli-smoke-test",
+                [sys.executable, "-c", "print('demo cli smoke ok')"],
+                "Demo smoke evidence.",
+            )
+            generate_packet(root)
+            print(f"Demo project: {root}")
+            print(f"Recorded {test_run['id']} and {smoke_run['id']}")
+            print(f"Demo proof packet: {root / 'u27' / 'PROOF_PACKET.md'}")
+            return 0 if test_exit == 0 and smoke_exit == 0 else 1
     except LedgerError as error:
         print(f"error: {error}", file=sys.stderr)
         return 2
 
     return 1
+
+
+def _execute_and_record(root: Path, case_id: str, command_args: list[str], note: str) -> tuple[dict, int]:
+    ledger = load_ledger(root / "u27" / "proof_ledger.json")
+    get_case(root, ledger, case_id)
+    run_id = f"run-{len(ledger['runs']) + 1:04d}"
+    evidence_dir = root / "u27" / "evidence"
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    evidence_path = evidence_dir / f"{run_id}.txt"
+    try:
+        completed = subprocess.run(command_args, cwd=root, text=True, capture_output=True, check=False)
+        exit_code = completed.returncode
+        stdout = completed.stdout
+        stderr = completed.stderr
+        extra_lines: list[str] = []
+    except OSError as error:
+        exit_code = 1
+        stdout = ""
+        stderr = ""
+        extra_lines = [f"launch_error: {error}"]
+
+    evidence_path.write_text(
+        "\n".join(
+            [
+                f"$ {shlex.join(command_args)}",
+                f"exit_code: {exit_code}",
+                *extra_lines,
+                "",
+                "## stdout",
+                stdout,
+                "## stderr",
+                stderr,
+            ]
+        ),
+        encoding="utf-8",
+    )
+    status = "pass" if exit_code == 0 else "fail"
+    run = record_run(
+        root,
+        case_id=case_id,
+        command=shlex.join(command_args),
+        status=status,
+        evidence=[str(evidence_path)],
+        note=note,
+    )
+    return run, exit_code
 
 
 if __name__ == "__main__":
