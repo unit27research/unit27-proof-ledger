@@ -66,6 +66,24 @@ class ProofLedgerCoreTests(unittest.TestCase):
             self.assertEqual(ledger["runs"][0]["status"], "pass")
             self.assertEqual(ledger["runs"][0]["evidence"][0], "outputs/test-output.txt")
 
+    def test_record_run_rejects_evidence_outside_project(self):
+        with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as outside:
+            root = Path(tmp)
+            init_project(root)
+            evidence_path = Path(outside) / "external.txt"
+            evidence_path.write_text("outside", encoding="utf-8")
+
+            with self.assertRaises(LedgerError) as error:
+                record_run(
+                    root,
+                    case_id="demo-command",
+                    command="external proof",
+                    status="pass",
+                    evidence=[str(evidence_path)],
+                )
+
+            self.assertIn("Evidence path must be inside project root", str(error.exception))
+
     def test_generate_packet_groups_verified_claims_and_limits(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

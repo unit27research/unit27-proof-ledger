@@ -52,6 +52,8 @@ Or execute a command and capture its evidence automatically:
 proof-ledger run --case demo-command -- python3 -m unittest discover -s tests
 ```
 
+If the command exits nonzero or fails to launch, Proof Ledger records a failed run with captured evidence and returns a nonzero exit code.
+
 Generate the proof packet:
 
 ```bash
@@ -116,6 +118,7 @@ PYTHONPATH=src python3 -m unittest discover -s tests
 PYTHONPATH=src python3 -m proof_ledger.cli init --root examples/sample-project
 PYTHONPATH=src python3 -m proof_ledger.cli run --root examples/sample-project --case demo-command -- python3 -c "print('demo command completed')"
 PYTHONPATH=src python3 -m proof_ledger.cli packet --root examples/sample-project
+python3 scripts/verify_wheel.py /tmp/proof-ledger-wheel-final/unit27_proof_ledger-0.1.0-py3-none-any.whl
 ```
 
 ## License

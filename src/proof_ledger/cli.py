@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from proof_ledger.core import LedgerError, generate_packet, init_project, load_ledger, record_run
+from proof_ledger.core import LedgerError, generate_packet, get_case, init_project, load_ledger, record_run
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -80,26 +80,39 @@ def main(argv: list[str] | None = None) -> int:
             if not command_args:
                 raise LedgerError("run requires a command after --")
             ledger = load_ledger(root / "u27" / "proof_ledger.json")
+            get_case(root, ledger, args.case)
             run_id = f"run-{len(ledger['runs']) + 1:04d}"
             evidence_dir = root / "u27" / "evidence"
             evidence_dir.mkdir(parents=True, exist_ok=True)
             evidence_path = evidence_dir / f"{run_id}.txt"
-            completed = subprocess.run(command_args, cwd=root, text=True, capture_output=True, check=False)
+            try:
+                completed = subprocess.run(command_args, cwd=root, text=True, capture_output=True, check=False)
+                exit_code = completed.returncode
+                stdout = completed.stdout
+                stderr = completed.stderr
+                extra_lines: list[str] = []
+            except OSError as error:
+                exit_code = 1
+                stdout = ""
+                stderr = ""
+                extra_lines = [f"launch_error: {error}"]
+
             evidence_path.write_text(
                 "\n".join(
                     [
                         f"$ {shlex.join(command_args)}",
-                        f"exit_code: {completed.returncode}",
+                        f"exit_code: {exit_code}",
+                        *extra_lines,
                         "",
                         "## stdout",
-                        completed.stdout,
+                        stdout,
                         "## stderr",
-                        completed.stderr,
+                        stderr,
                     ]
                 ),
                 encoding="utf-8",
             )
-            status = "pass" if completed.returncode == 0 else "fail"
+            status = "pass" if exit_code == 0 else "fail"
             run = record_run(
                 root,
                 case_id=args.case,
@@ -109,7 +122,7 @@ def main(argv: list[str] | None = None) -> int:
                 note=args.note,
             )
             print(f"Recorded {run['id']}")
-            return completed.returncode
+            return exit_code
     except LedgerError as error:
         print(f"error: {error}", file=sys.stderr)
         return 2

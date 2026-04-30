@@ -60,6 +60,8 @@ Proof Ledger should fail or downgrade when:
 - A run references an unknown case.
 - A run has no evidence path.
 - An evidence path does not exist.
+- An evidence path points outside the project root.
+- A command cannot launch; this should be recorded as failed evidence, not lost as terminal noise.
 - A cases file is malformed.
 - A ledger has an unsupported schema version.
 - A proof packet tries to imply broader certainty than recorded evidence supports.

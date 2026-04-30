@@ -102,6 +102,48 @@ class ProofLedgerCliTests(unittest.TestCase):
             self.assertEqual(len(evidence_files), 1)
             self.assertIn("proof ok", evidence_files[0].read_text())
 
+    def test_run_command_validates_case_before_executing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.run_cli(root, "init")
+            marker = root / "should-not-exist.txt"
+
+            result = self.run_cli(
+                root,
+                "run",
+                "--case",
+                "missing-case",
+                "--",
+                sys.executable,
+                "-c",
+                f"from pathlib import Path; Path({str(marker)!r}).write_text('ran')",
+            )
+
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("Unknown case_id", result.stderr)
+            self.assertFalse(marker.exists())
+            self.assertFalse((root / "u27" / "evidence").exists())
+
+    def test_run_command_records_launch_failure_as_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.run_cli(root, "init")
+
+            result = self.run_cli(
+                root,
+                "run",
+                "--case",
+                "demo-command",
+                "--",
+                "definitely-not-a-real-proof-ledger-command",
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("Recorded run-0001", result.stdout)
+            evidence = root / "u27" / "evidence" / "run-0001.txt"
+            self.assertTrue(evidence.exists())
+            self.assertIn("launch_error:", evidence.read_text())
+
 
 if __name__ == "__main__":
     unittest.main()

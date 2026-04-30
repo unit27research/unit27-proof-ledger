@@ -71,11 +71,8 @@ def record_run(
     project_root = Path(root).absolute()
     ledger_path = project_root / "u27" / "proof_ledger.json"
     ledger = load_ledger(ledger_path)
-    cases = _load_cases(project_root / ledger["cases_path"])
+    case = get_case(project_root, ledger, case_id)
 
-    case = next((item for item in cases if item["id"] == case_id), None)
-    if case is None:
-        raise LedgerError(f"Unknown case_id: {case_id}")
     if status not in {"pass", "fail", "regression", "blocked"}:
         raise LedgerError("status must be pass, fail, regression, or blocked")
 
@@ -96,6 +93,15 @@ def record_run(
     ledger["runs"].append(run)
     _write_json(ledger_path, ledger)
     return run
+
+
+def get_case(root: Path | str, ledger: dict, case_id: str) -> dict:
+    project_root = Path(root).absolute()
+    cases = _load_cases(project_root / ledger["cases_path"])
+    case = next((item for item in cases if item["id"] == case_id), None)
+    if case is None:
+        raise LedgerError(f"Unknown case_id: {case_id}")
+    return case
 
 
 def generate_packet(root: Path | str) -> str:
@@ -214,7 +220,10 @@ def _relative_existing_path(root: Path, value: str) -> str:
     try:
         return full_path.relative_to(root).as_posix()
     except ValueError:
-        return full_path.resolve().relative_to(root.resolve()).as_posix()
+        try:
+            return full_path.resolve().relative_to(root.resolve()).as_posix()
+        except ValueError as error:
+            raise LedgerError(f"Evidence path must be inside project root: {value}") from error
 
 
 def _write_json(path: Path, payload: dict | list) -> None:
