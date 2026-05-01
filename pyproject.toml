@@ -12,7 +12,7 @@ license = { text = "MIT" }
 authors = [
   { name = "Unit27 Research" }
 ]
-keywords = ["ai", "evals", "cli", "developer-tools", "evidence", "proof", "testing", "unit27"]
+keywords = ["ai", "evals", "cli", "research-infrastructure", "evidence", "proof", "testing", "unit27"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",

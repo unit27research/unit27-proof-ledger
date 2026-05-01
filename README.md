@@ -13,6 +13,13 @@ FUNCTION: Evidence Recording + Proof Artifact Generation
 REF_ID: PROOF-LEDGER-01
 ```
 
+## Release Status
+
+`SOURCE_STATUS: PUBLIC_PACKAGE`
+`ACCESS_STATUS: CLEARED_FOR_EXTERNAL_USE`
+
+This repository is a released Unit27 field kit: visible, inspectable, and intended for orientation, testing, and practical use. Controlled protocol materials remain outside this source package.
+
 It answers one narrow question:
 
 > What evidence supports the claims this repo is making right now?
@@ -152,7 +159,7 @@ The ledger is the durable evidence record. The packet is the reviewer-facing exp
 
 ## Reliability
 
-Proof Ledger is maintained as part of the Unit27 research toolchain. CI verifies the test suite, wheel build, and wheel contents before changes are considered ready.
+Proof Ledger is released as part of the Unit27 public tooling channel. CI verifies the test suite, wheel build, and wheel contents before changes are considered ready.
 
 ## Case Shape
 
