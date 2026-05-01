@@ -81,7 +81,7 @@ def record_run(
         raise LedgerError("At least one evidence path is required")
 
     run = {
-        "id": f"run-{len(ledger['runs']) + 1:04d}",
+        "id": next_run_id(ledger),
         "case_id": case_id,
         "claim": case["claim"],
         "command": command,
@@ -93,6 +93,19 @@ def record_run(
     ledger["runs"].append(run)
     _write_json(ledger_path, ledger)
     return run
+
+
+def next_run_id(ledger: dict) -> str:
+    highest = 0
+    for run in ledger.get("runs", []):
+        run_id = str(run.get("id", ""))
+        if not run_id.startswith("run-"):
+            continue
+        try:
+            highest = max(highest, int(run_id.removeprefix("run-")))
+        except ValueError:
+            continue
+    return f"run-{highest + 1:04d}"
 
 
 def get_case(root: Path | str, ledger: dict, case_id: str) -> dict:

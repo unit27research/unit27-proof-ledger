@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from proof_ledger.core import LedgerError, generate_packet, get_case, init_project, load_ledger, record_run
+from proof_ledger.core import LedgerError, generate_packet, get_case, init_project, load_ledger, next_run_id, record_run
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -119,7 +119,7 @@ def main(argv: list[str] | None = None) -> int:
 def _execute_and_record(root: Path, case_id: str, command_args: list[str], note: str) -> tuple[dict, int]:
     ledger = load_ledger(root / "u27" / "proof_ledger.json")
     get_case(root, ledger, case_id)
-    run_id = f"run-{len(ledger['runs']) + 1:04d}"
+    run_id = next_run_id(ledger)
     evidence_dir = root / "u27" / "evidence"
     evidence_dir.mkdir(parents=True, exist_ok=True)
     evidence_path = evidence_dir / f"{run_id}.txt"

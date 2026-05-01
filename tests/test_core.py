@@ -68,6 +68,39 @@ class ProofLedgerCoreTests(unittest.TestCase):
             self.assertEqual(ledger["runs"][0]["status"], "pass")
             self.assertEqual(ledger["runs"][0]["evidence"][0], "outputs/test-output.txt")
 
+    def test_record_run_uses_next_available_run_id_after_imported_runs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            init_project(root)
+            evidence_path = root / "outputs" / "test-output.txt"
+            evidence_path.parent.mkdir()
+            evidence_path.write_text("3 passed", encoding="utf-8")
+            ledger_path = root / "u27" / "proof_ledger.json"
+            ledger = load_ledger(ledger_path)
+            ledger["runs"] = [
+                {
+                    "id": "run-0005",
+                    "case_id": "tests-pass",
+                    "claim": "Imported proof.",
+                    "command": "old command",
+                    "status": "pass",
+                    "recorded_at": "2026-05-01T00:00:00+00:00",
+                    "evidence": ["outputs/test-output.txt"],
+                    "note": "",
+                }
+            ]
+            ledger_path.write_text(json.dumps(ledger), encoding="utf-8")
+
+            run = record_run(
+                root,
+                case_id="tests-pass",
+                command="python -m unittest",
+                status="pass",
+                evidence=[str(evidence_path)],
+            )
+
+            self.assertEqual(run["id"], "run-0006")
+
     def test_record_run_rejects_evidence_outside_project(self):
         with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as outside:
             root = Path(tmp)
