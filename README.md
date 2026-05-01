@@ -137,6 +137,10 @@ evals/proof_cases.json
 
 The ledger is the durable evidence record. The packet is the reviewer-facing export.
 
+## Reliability
+
+Proof Ledger is maintained as part of the Unit27 research toolchain. CI verifies the test suite, wheel build, and wheel contents before changes are considered ready.
+
 ## Case Shape
 
 ```json
