@@ -17,6 +17,19 @@ It answers one narrow question:
 
 > What evidence supports the claims this repo is making right now?
 
+## Why Use It
+
+Use Proof Ledger before publishing a repo, demo, or research artifact when claims like `tests pass`, `demo works`, or `ready for review` need durable evidence instead of memory.
+
+It is useful when a terminal result should become an inspectable proof packet that another reviewer can open later and trace back to the command that produced it.
+
+Example:
+
+```text
+Claim: The CLI smoke test passes.
+Result: Proof Ledger records the command, exit status, evidence file, and reviewer-facing proof packet.
+```
+
 ## 60-Second Start
 
 From this repo:
