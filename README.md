@@ -53,10 +53,10 @@ It is designed to feel like an evidence ledger, not a benchmark suite or project
 
 AI and agentic systems often ship with vague proof:
 
-- "tested locally"
-- "demo works"
-- "evals pass"
-- "ready for review"
+- `tested locally`
+- `demo works`
+- `evals pass`
+- `ready for review`
 
 Proof Ledger makes that evidence inspectable. It records what was tested, what command produced the evidence, what passed or failed, where the proof lives, and what can honestly be shown to a reviewer.
 
