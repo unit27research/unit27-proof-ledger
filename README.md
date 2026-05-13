@@ -1,11 +1,11 @@
-# U27-S05 // Proof Ledger
+# U27-S06 // Proof Ledger
 
 [![CI](https://github.com/unit27research/unit27-proof-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/unit27research/unit27-proof-ledger/actions/workflows/ci.yml)
 
 Proof Ledger enforces evidence discipline by converting eval runs, demo commands, and test results into durable proof artifacts.
 
 ```text
-U27-S05
+U27-S06
 PROOF LEDGER
 
 CLASS: SYSTEM
